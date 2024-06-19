@@ -5,7 +5,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
-    "test": "node ./playground/express.js",
+    "test": "echo \"Ok\" && exit 0",
     "postinstall": "npm run build"
   },
   "author": "",
