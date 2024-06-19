@@ -67,7 +67,7 @@ export class CE_Picture extends CE_Object{
         if (this._size.x == 0 && this._size.y == 0){
             return this.defaultSize()
         }
-        
+
         return this._size
     }
 
@@ -80,21 +80,23 @@ export class CE_Picture extends CE_Object{
         if (this._data){
             let canvas = document.createElement("canvas")
             let ctx2 = canvas.getContext("2d")
+
+            let s = this.actualSize()
     
-            canvas.width = this._size.x
-            canvas.height = this._size.y
+            canvas.width = s.x
+            canvas.height = s.y
     
             let r1 = this.defaultRatio()
             let r2 = this.actualRatio()
     
-            let nw  = r1 < r2 ? this._size.x  : r1 * this._size.y
-            let nh = r1 < r2 ? this._size.x / r1 : this._size.y
+            let nw  = r1 < r2 ? s.x  : r1 * s.y
+            let nh = r1 < r2 ? s.x / r1 : s.y
     
-            let offx = Math.abs(nw - this._size.x)*(this.anchor.x+1)/2
-            let offy = Math.abs(nh - this._size.y)*(this.anchor.y+1)/2
+            let offx = Math.abs(nw - s.x)*(this.anchor.x+1)/2
+            let offy = Math.abs(nh - s.y)*(this.anchor.y+1)/2
     
             ctx2?.drawImage(this._data!,-offx, -offy, nw, nh)
-            ctx.drawImage(canvas,this.position.x, this.position.y,this._size.x,this._size.y)
+            ctx.drawImage(canvas,this.position.x, this.position.y,s.x,s.y)
         }
         this.postDraw(ctx)
     }
