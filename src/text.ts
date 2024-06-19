@@ -26,6 +26,8 @@ export class CE_Text extends CE_Object {
     }
 
     public draw(ctx:CanvasRenderingContext2D){
+        this.preDraw(ctx)
+
         ctx.font = `${this.fontWeight} ${this.fontSize}px ${this.fontFamily}`
         ctx.textAlign = this.textAlign as CanvasTextAlign;
         ctx.fillStyle = this.color
@@ -35,6 +37,8 @@ export class CE_Text extends CE_Object {
         ctx.font = `${this.fontWeight} ${coef*this.fontSize}px ${this.fontFamily}`
 
         ctx.fillText(this.data, this.position.x, this.position.y);
+
+        this.postDraw(ctx)
     }
 
     public wordSize(ctx:CanvasRenderingContext2D,word:string,letterSpacing:number){
