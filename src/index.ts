@@ -1,16 +1,10 @@
 import {CE_Object} from "./object";
+import {CE_Vec2} from "./vec2";
 export {CE_Object} from "./object";
 export {CE_Picture} from "./picture";
 export {CE_Text} from "./text";
 export {CE_FormattedText} from "./formattedText";
 export {CE_Vec2} from "./vec2";
-
-export type configuration = {
-    backgroundURL: string,
-    height:number,
-    width:number,
-    canvas:HTMLCanvasElement
-}
 
 export type FormattingFunction = (input: string) => {
     fontSize: number;
@@ -24,16 +18,20 @@ export type FormattingFunction = (input: string) => {
 }
 
 export class Template {
-    private configuration : configuration
+    private size : CE_Vec2
+    private _canvas:HTMLCanvasElement|undefined
     private elements : CE_Object[] = []
-    ctx:CanvasRenderingContext2D
+    ctx:CanvasRenderingContext2D|undefined
 
-    constructor( configuration : configuration) {
-        this.configuration = configuration
+    constructor( size:CE_Vec2 ) {
+        this.size = size
+    }
 
-        this.ctx = this.configuration.canvas.getContext('2d')!;
-        this.configuration.canvas.height = this.configuration.height
-        this.configuration.canvas.width = this.configuration.width
+    set canvas(val:HTMLCanvasElement) {
+        this._canvas = val
+        this.ctx = this._canvas.getContext('2d')!;
+        this._canvas.height = this.size.y
+        this._canvas.width = this.size.x
     }
 
     public add(el:CE_Object) {
@@ -43,9 +41,12 @@ export class Template {
     public draw() {
         this.clear()
 
+        if (!this.ctx) return
+
         for (let el of this.elements){
             el.draw(this.ctx)
         }
+
     }
 
     public startLoop(){
@@ -55,13 +56,17 @@ export class Template {
     }
 
     public clear(){
-        this.ctx.clearRect(0,0,this.configuration.width, this.configuration.height)
+        if (!this.ctx) return
+
+        this.ctx.clearRect(0,0,this.size.x, this.size.y)
     }
 
-    public download(){
+    public download(fileName:string){
+        if (!this._canvas) return
+
         var link = document.createElement('a');
         link.download = 'mail.png';
-        link.href = this.configuration.canvas.toDataURL()
+        link.href = this._canvas.toDataURL()
         link.click();
     }
 }
