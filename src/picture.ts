@@ -3,8 +3,9 @@ import { CE_Vec2 } from "./vec2"
 
 export class CE_Picture extends CE_Object{
     private _data : HTMLImageElement|undefined = undefined
-    private _size = new CE_Vec2(0,0)
+    private _size = new CE_Vec2(1,1)
 
+    // -1 <= x <= 1 ; -1 <= y <= 1
     anchor = new CE_Vec2(0,0)
 
     constructor () {
@@ -46,32 +47,53 @@ export class CE_Picture extends CE_Object{
         })
     }
 
+    public defaultSize(){
+        if (this._data){
+            return new CE_Vec2(this._data.width,this._data.height)
+        }
+        
+        return new CE_Vec2(1,1)
+    }
+
+    public defaultRatio(){
+        let s = this.defaultSize()
+        return s.x/s.y
+    }
+
+    public actualRatio(){
+        let s = this.actualSize()
+        return s.x/s.y
+    }
+
+    public actualSize(){
+        return this._size
+    }
+
+    public resize(nSize:CE_Vec2){
+        this._size = nSize
+    }
+
     public draw(ctx:CanvasRenderingContext2D) {
         this.preDraw(ctx)
         if (this._data){
-            ctx.drawImage(this._data, this.position.x, this.position.y, this._size.x, this._size.y);
+            let canvas = document.createElement("canvas")
+            let ctx2 = canvas.getContext("2d")
+    
+            canvas.width = this._size.x
+            canvas.height = this._size.y
+    
+            let r1 = this.defaultRatio()
+            let r2 = this.actualRatio()
+    
+            let nw  = r1 < r2 ? this._size.x  : r1 * this._size.y
+            let nh = r1 < r2 ? this._size.x / r1 : this._size.y
+    
+            let offx = Math.abs(nw - this._size.x)*(this.anchor.x+1)/2
+            let offy = Math.abs(nh - this._size.y)*(this.anchor.y+1)/2
+    
+            ctx2?.drawImage(this._data!,-offx, -offy, nw, nh)
+            ctx.drawImage(canvas,this.position.x, this.position.y,this._size.x,this._size.y)
         }
         this.postDraw(ctx)
-    }
-
-    public drawResizeCropImage(ctx:CanvasRenderingContext2D,maxWidth:number,maxHeight:number){
-
-        let canvas = document.createElement("canvas")
-        let ctx2 = canvas.getContext("2d")
-
-        canvas.width = maxWidth
-        canvas.height = maxHeight
-
-        let r1 = this._size.x/this._size.y
-        let r2 = maxWidth/maxHeight
-
-        let nw  = r1 < r2 ? maxWidth  : r1 * maxHeight
-        let nh = r1 < r2 ? maxWidth / r1 : maxHeight
-
-        let offx = Math.abs(nw - maxWidth)/2
-        let offy = Math.abs(nh - maxHeight)/2
-
-        ctx2?.drawImage(this._data!,-offx, -offy, nw, nh)
-        ctx.drawImage(canvas,this.position.x, this.position.y,maxWidth,maxHeight)
     }
 }

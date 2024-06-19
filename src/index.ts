@@ -1,3 +1,4 @@
+import {CE_Object} from "./object";
 export {CE_Object} from "./object";
 export {CE_Picture} from "./picture";
 export {CE_Text} from "./text";
@@ -23,6 +24,7 @@ export type FormattingFunction = (input: string) => {
 
 export class Template {
     private configuration : configuration
+    private elements : CE_Object[] = []
     ctx:CanvasRenderingContext2D
 
     constructor( configuration : configuration) {
@@ -31,6 +33,23 @@ export class Template {
         this.ctx = this.configuration.canvas.getContext('2d')!;
         this.configuration.canvas.height = this.configuration.height
         this.configuration.canvas.width = this.configuration.width
+    }
+
+    public add(el:CE_Object) {
+        this.elements.push(el)
+    }
+
+    public draw() {
+        this.clear()
+
+        for (let el of this.elements){
+            el.draw(this.ctx)
+        }
+    }
+
+    public startLoop(){
+        this.draw()
+        requestAnimationFrame(this.startLoop);
     }
 
     public clear(){

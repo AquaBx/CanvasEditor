@@ -50,8 +50,6 @@ export class CE_Text extends CE_Object {
         let fmt = formatting(this.data)
 
         for (let word of this.data.split(" ")){
-
-            
             let spaceSize = this.wordSize(ctx," ",0)
 
             ctx.font = `${fmt.fontWeight} ${fmt.fontSize}px ${fmt.fontFamily}`
@@ -59,7 +57,7 @@ export class CE_Text extends CE_Object {
             
             let nl = xOffset + fmt.letterSpacing + spaceSize + fmt.letterSpacing
             let wordSize = this.wordSize(ctx,word,fmt.letterSpacing)
-            
+
             if (xOffset == 0) {
                 xOffset = 0
             }
