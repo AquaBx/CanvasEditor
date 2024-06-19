@@ -23,15 +23,22 @@ export class Template {
     private elements : CE_Object[] = []
     ctx:CanvasRenderingContext2D|undefined
 
+    destroyed = false
+
     constructor( size:CE_Vec2 ) {
         this.size = size
     }
 
     set canvas(val:HTMLCanvasElement) {
-        this._canvas = val
-        this.ctx = this._canvas.getContext('2d')!;
-        this._canvas.height = this.size.y
-        this._canvas.width = this.size.x
+        if (val == null){
+            this.destroyed = true
+        }
+        else {
+            this._canvas = val
+            this.ctx = this._canvas.getContext('2d')!;
+            this._canvas.height = this.size.y
+            this._canvas.width = this.size.x
+        }
     }
 
     public add(el:CE_Object) {
