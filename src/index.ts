@@ -48,8 +48,9 @@ export class Template {
     }
 
     public startLoop(){
+        let callback = this.startLoop
         this.draw()
-        requestAnimationFrame(this.startLoop);
+        requestAnimationFrame(callback);
     }
 
     public clear(){
