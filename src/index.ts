@@ -2,6 +2,7 @@ import {CE_Object} from "./object";
 export {CE_Object} from "./object";
 export {CE_Picture} from "./picture";
 export {CE_Text} from "./text";
+export {CE_FormattedText} from "./formattedText";
 export {CE_Vec2} from "./vec2";
 
 export type configuration = {
