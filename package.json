@@ -5,7 +5,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./playground/express.js",
     "postinstall": "npm run build"
   },
   "author": "",
@@ -15,5 +15,8 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "express": "^4.19.2"
   }
 }
