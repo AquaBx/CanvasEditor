@@ -3,7 +3,7 @@ import { CE_Vec2 } from "./vec2"
 
 export class CE_Picture extends CE_Object{
     private _data : HTMLImageElement|undefined = undefined
-    private _size = new CE_Vec2(1,1)
+    private _size = new CE_Vec2(0,0)
 
     // -1 <= x <= 1 ; -1 <= y <= 1
     anchor = new CE_Vec2(0,0)
@@ -20,7 +20,6 @@ export class CE_Picture extends CE_Object{
         return new Promise((resolve,reject) =>{
             image.onload = () => {
                 context._data = image
-                context._size = new CE_Vec2(image.width,image.height)
                 
                 resolve(undefined)
             }
@@ -40,7 +39,6 @@ export class CE_Picture extends CE_Object{
         return new Promise((resolve,reject) =>{
             image.onload = function (){
                 context._data = image
-                context._size = new CE_Vec2(image.width,image.height)
 
                 resolve(undefined)
             }
@@ -66,6 +64,10 @@ export class CE_Picture extends CE_Object{
     }
 
     public actualSize(){
+        if (this._size.x == 0 && this._size.y == 0){
+            return this.defaultSize()
+        }
+        
         return this._size
     }
 
