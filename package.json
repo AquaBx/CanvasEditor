@@ -13,10 +13,7 @@
   "description": "",
   "dependencies": {
     "ts-node": "^10.9.2",
-    "tsup": "^8.1.0",
-    "typescript": "^5.4.5"
-  },
-  "devDependencies": {
-    "express": "^4.19.2"
+    "tsup": "^8.2.4",
+    "typescript": "^5.6.2"
   }
 }
