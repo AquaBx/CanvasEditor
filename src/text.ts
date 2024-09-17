@@ -13,6 +13,7 @@ export class CE_Text extends CE_Object {
     public color:string
     public letterSpacing:number
     public textAlign:string
+    public strokes : {color:string,width:number}[]
 
     constructor(fontFamily:string,fontSize:number,fontWeight:string,color:string,letterSpacing:number,textAlign:string="left"){
         super()
@@ -23,6 +24,7 @@ export class CE_Text extends CE_Object {
         this.color = color
         this.letterSpacing = letterSpacing
         this.textAlign = textAlign
+        this.strokes = []
     }
 
     public draw(ctx:CanvasRenderingContext2D){
@@ -37,6 +39,12 @@ export class CE_Text extends CE_Object {
         ctx.font = `${this.fontWeight} ${coef*this.fontSize}px ${this.fontFamily}`
 
         ctx.fillText(this.data, this.position.x, this.position.y);
+
+        for (let stroke of this.strokes){
+            ctx.lineWidth = stroke.width;
+            ctx.strokeStyle = stroke.color;
+            ctx.strokeText(this.data, this.position.x, this.position.y)
+        }
 
         this.postDraw(ctx)
     }
