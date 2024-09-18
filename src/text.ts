@@ -38,14 +38,14 @@ export class CE_Text extends CE_Object {
         let coef = Math.min(this.width/ctx.measureText(this.data).width,1)
         ctx.font = `${this.fontWeight} ${coef*this.fontSize}px ${this.fontFamily}`
 
-        ctx.fillText(this.data, this.position.x, this.position.y);
-
+        
         for (let stroke of this.strokes){
             ctx.lineWidth = stroke.width;
             ctx.strokeStyle = stroke.color;
             ctx.strokeText(this.data, this.position.x, this.position.y)
         }
-
+        ctx.fillText(this.data, this.position.x, this.position.y);
+        
         this.postDraw(ctx)
     }
 
